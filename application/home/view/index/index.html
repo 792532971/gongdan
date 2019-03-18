@@ -1,0 +1,134 @@
+{include file="common/meta"}
+<link rel="stylesheet" href="__STATIC__/bootstrap-3.3.7-dist/css/bootstrap.css">
+<script src="__STATIC__/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script src="__STATIC__/home/txzh/base.js"></script>
+<div id="wrapper" class="am-text-sm">
+    <div class="am-g">
+        <div class="am-u-sm-12 am-u-sm-centered">
+
+            <div class="am-panel am-panel-default">
+                <div class="am-panel-bd am-text-center">
+                    <div class="am-g">
+                        <div class="am-u-sm-3">
+                            <a style="cursor:pointer;text-decoration:none;" onclick="ticket_loc(-1)">
+                                <div class="am-text-xxxl">{$num}</div>
+                                <div>待解决</div>
+                            </a>
+                        </div>
+                        <div class="am-u-sm-3">
+                            <a style="cursor:pointer;text-decoration:none;" onclick="ticket_loa(2)">
+                                <div class="am-text-xxxl">{$huifuNum}</div>
+                                <div>待回复</div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-g am-margin-bottom am-g-collapse">
+                <div class="am-u-sm-12 am-u-md-6">
+                    <div class="am-btn-toolbar">
+                        <div class="am-btn-group am-btn-group-sm">
+                            <a href="" class="am-btn am-btn-white am-disabled">全部</a>
+                            <a href='{:url("index")}?keywords=1' class="am-btn am-btn-white ">今天</a>
+                            <a href='{:url("index")}?keywords=-1' class="am-btn am-btn-white ">昨天</a>
+                            <a href='{:url("index")}?keywords=7' class="am-btn am-btn-white ">本周</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="am-u-sm-12 am-u-md-4">
+                    <form>
+                        <div class="am-input-group am-input-group-sm">
+                            <input type="hidden" name="g" value="Form">
+                            <input type="hidden" name="m" value="Member">
+                            <input type="hidden" name="a" value="index">
+                            <input type="text" name="keyword" placeholder="请输入工单编号或者工单内容" value="" class="am-form-field">
+                            <span class="am-input-group-btn">
+                        <button class="am-btn am-btn-default" type="submit"><span class="am-icon-search"></span></button>
+                        </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="am-panel am-panel-default">
+                <table class="am-table">
+                    <tbody>
+                    <tr>
+                        <th class="am-show-lg-only">工单编号</th>
+                        <th class="am-show-lg-only">相关产品</th>
+                        <th>问题内容</th>
+                        <th class="am-show-lg-only">状态</th>
+                        <th class="am-show-lg-only">提交时间</th>
+                        <th class="am-show-lg-only">操作</th>
+                    </tr>
+                    {if count($data) >0 }
+                        {volist name="data" id="vo"}
+                            <tr>
+                                <td class="am-show-lg-only">
+                                    {$vo.number}
+                                </td>
+                                <td>
+                                    {$vo.ModelName}
+                                </td>
+                                <td>
+                                    <a style="cursor:pointer;text-decoration:none;" href="">{$vo.title}</a>
+                                </td>
+                                <td class="am-show-lg-only">{$vo.StatusA}</td>
+                                <td class="am-show-lg-only">{$vo.SubmitTime}</td>
+                                <td class="am-show-lg-only">
+                                    <a style="cursor:pointer;text-decoration:none;" onclick="javascript:loca_tick(this);" id="{$vo.number}">查看详情</a>
+                                </td>
+                            </tr>
+                        {/volist}
+                    {else /}
+                    <tr>
+                        <td colspan="6" style="text-align: center">无提交工单</td>
+                    </tr>
+
+                    {/if}
+
+
+                    </tbody>
+                </table>
+            </div>
+            <ul class="am-pagination am-pagination-right am-text-sm">
+                {$page|raw}
+            </ul>
+
+        </div>
+    </div>
+</div>
+{include file="common/footer"}
+<script>
+    function loca_tick(e){
+        window.location.href = '{:url("ticket/index")}?id='+e.id;
+    }
+
+    function ticket_tick(e){
+        alert(e.class);
+        window.location.href = '{:url("ticket/index")}?id='+e.id;
+    }
+
+    function ticket_loc() {
+        var u = getUrlParam('keywords');
+        location.href = '{:url("index")}?v=-1&keywords='+u;
+    }
+
+    function ticket_loa() {
+        var u = getUrlParam('keywords');
+        location.href = '{:url("index")}?v=2&keywords='+u;
+    }
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+
+        if (r != null)
+            return unescape(r[2]);
+        return null; //返回参数值
+    }
+</script>
+</body></html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)http://192.168.4.109:8088/?m=Login&a=index -->
+<html class="js cssanimations"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>TXZH</title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <link rel="icon" type="image/png" href="http://192.168.4.109:8088/favicon.ico">
+    <link rel="stylesheet" href="__STATIC__/home/txzh/amazeui.min.css">
+    <link rel="stylesheet" href="__STATIC__/home/txzh/app.css">
+    <link rel="stylesheet" href="__STATIC__/home/txzh/index.css">
+    <link rel="stylesheet" href="__STATIC__/home/txzh/ui-dialog.css">
+    <link rel="stylesheet" href="__STATIC__/home/txzh/amazeui.datetimepicker.css">
+
+    <!--[if (gte IE 9)|!(IE)]><!-->
+    <script src="__STATIC__/home/txzh/jquery.min.js"></script>
+
+    <!--<![endif]-->
+    <!--[if lte IE 8 ]>
+    <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+    <script src="__STATIC__/home/txzh/amazeui.ie8polyfill.min.js"></script>
+    <![endif]-->
+    <script src="__STATIC__/home/txzh/amazeui.min.js"></script>
+
+    <script src="__STATIC__/home/txzh/dialog-min.js"></script>
+    <script src="__STATIC__/home/txzh/dialog-plus-min.js"></script>
+    <script src="__STATIC__/home/txzh/amazeui.datetimepicker.min.js"></script>
+    <script src="__STATIC__/home/txzh/spectrum.js"></script>
+    <link rel="stylesheet" href="__STATIC__/admin/lib/layui/css/layui.css">
+    <script src="__STATIC__/admin/lib/layui/layui.js"></script>
+    <!--百度上传控件-->
+    <link rel="stylesheet" href="__STATIC__/home/txzh/webuploader.css">
+    <script src="__STATIC__/home/txzh/webuploader.js"></script>
+    <script src="__STATIC__/home/txzh/AMUIwebuploader.js"></script>
+
+    <script>
+        $(function(){
+            $.webuploaderConfig({
+                server:'/?m=Upload&a=ueditor&method=POST&action=uploadimage'
+            });
+        })
+    </script>
+    <!--百度上传控件-->
+
+    <script src="__STATIC__/home/txzh/app.js"></script>
+</head>
+<body>
+<header class="am-topbar">
+    <h1 class="am-topbar-brand">
+        <a href='{:url("index/index")}'>TXZH</a>
+    </h1>
+
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: &#39;#ticket-topbar-collapse&#39;}">
+        <span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+    <div class="am-collapse am-topbar-collapse am-topbar-right am-text-sm" id="ticket-topbar-collapse">
+        <ul class="am-nav am-nav-pills am-topbar-nav admin-header-list">
+            <li>
+                <a href='{:url("category/index")}'><i class="am-icon-yelp"></i> 提交工单</a>
+            </li>
+
+            <li>
+                <a href='{:url("index/index")}'><i class="am-icon-fire"></i> 我的工单</a>
+            </li>
+            <li>
+                <a href=""><i class="am-icon-user"></i> 个人信息</a>
+            </li>
+            <li>
+                <a href='{:url("login/logout")}'><i class="am-icon-sign-out"></i> 退出登录</a>
+            </li>
+        </ul>
+    </div>
+
+</header>

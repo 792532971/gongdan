@@ -1,0 +1,147 @@
+{include file="common/meta"}
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>角色管理</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+            <input class="layui-input" placeholder="开始日" name="start" id="start">
+            <input class="layui-input" placeholder="截止日" name="end" id="end">
+            <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+    </div>
+    <xblock>
+        <!--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>-->
+        <button class="layui-btn" onclick="x_admin_show('添加角色','roleAdd',600,400)"><i class="layui-icon"></i>添加角色
+        </button>
+        <!--<span class="x-right" style="line-height:40px">共有数据：88 条</span>-->
+    </xblock>
+    <table class="layui-table" id="table_1">
+        <thead>
+        <tr>
+            <!--<th>-->
+                <!--<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i-->
+                        <!--class="layui-icon">&#xe605;</i></div>-->
+            <!--</th>-->
+            <th>ID</th>
+            <th>角色名</th>
+            <th>拥有权限规则</th>
+            <th>描述</th>
+            <th>状态</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+        <template v-if="lists.length" v-for="(v,k) in lists">
+        <tr>
+            <!--<td>-->
+                <!--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i>-->
+                <!--</div>-->
+            <!--</td>-->
+            <td>{{ v.id }}</td>
+            <td>{{ v.title }}</td>
+            <td>{{ v.rules }}</td>
+            <td>{{ v.desc }}</td>
+            <td class="td-status">
+                <span v-if="v.status == 0" class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
+                <span v-else class="layui-btn layui-btn-sm layui-btn-danger">已禁用</span>
+            </td>
+            <td class="td-manage">
+                <!--<a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">-->
+                <!--<i class="layui-icon">&#xe601;</i>-->
+                <!--</a>-->
+                <a title="编辑" @click="bianji(v)" class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal"
+                   href="javascript:;">
+                    编辑
+                </a>
+                <a title="删除" @click="btnDelete(v)" class="layui-btn layui-btn-xs layui-btn-radius layui-btn-danger"
+                   href="javascript:;">
+                    删除
+                </a>
+
+            </td>
+        </tr>
+        </template>
+        <template v-if="lists==''">
+            <tr>
+                <td colspan="11" style="text-align: center;">没有找到匹配的记录</td>
+            </tr>
+        </template>
+
+        </tbody>
+
+    </table>
+    <div class="page">
+        <!--<div>-->
+            <!--<a class="prev" href="">&lt;&lt;</a>-->
+            <!--<a class="num" href="">1</a>-->
+            <!--<span class="current">2</span>-->
+            <!--<a class="num" href="">3</a>-->
+            <!--<a class="num" href="">489</a>-->
+            <!--<a class="next" href="">&gt;&gt;</a>-->
+        <!--</div>-->
+    </div>
+
+</div>
+<script>
+    new Vue({
+        el: '#table_1',
+        data: {
+            lists: [],
+        },
+        mounted: function () {
+            this.$nextTick(function () {
+                this.getData()  //第二步
+            });
+        },
+        methods: {
+            getData: function () {   //第三步
+                let _this = this;
+                layui.use(['form', 'jquery'], function () {
+                    $ = layui.jquery;
+                    $.post('{:url("group_data")}').then(function (res) {
+                        _this.$set(_this, 'lists', res);   //把获取到的数据放入lists里面   // 第四步
+                    }, function (res) {
+
+                    });
+
+                });
+
+            },
+            btnDelete: function (even) {
+
+                layer.confirm('确定删除吗?', {
+                    btn: ['确定删除', '我再想想'] //按钮
+                }, function () {
+                    $.get('{:url("groupDelete")}', {id: even.id}, function (res) {
+                        if (res.code === 1) {
+                            layer.msg(res.msg, {icon: 1}, function () {
+                                location.reload();
+                            }, 1000)
+                        } else {
+                            layer.msg(res.msg);
+
+                        }
+                    })
+                })
+            },
+            bianji: function (even) {
+                x_admin_show('权限编辑', 'power?id=' + even.id);
+            }
+        }
+    })
+</script>
+
+</body>
+
+</html>

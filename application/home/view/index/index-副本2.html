@@ -1,0 +1,110 @@
+{include file="common/meta"}
+
+<div id="wrapper" class="am-text-sm">
+    <div class="am-g">
+        <div class="am-u-sm-12 am-u-sm-centered">
+
+            <div class="am-panel am-panel-default">
+                <div class="am-panel-bd am-text-center">
+                    <div class="am-g">
+                        <div class="am-u-sm-3">
+                            <a href="http://192.168.4.109:8088/?m=Member&amp;a=index&amp;status=2">
+                                <div class="am-text-xxxl">1</div>
+                                <div>待回复</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-g am-margin-bottom am-g-collapse">
+                <div class="am-u-sm-12 am-u-md-6">
+                    <div class="am-btn-toolbar">
+                        <div class="am-btn-group am-btn-group-sm">
+                            <a href="http://192.168.4.109:8088/?m=Member&amp;a=index" class="am-btn am-btn-white am-disabled">全部</a>
+                            <a href="http://192.168.4.109:8088/?m=Member&amp;a=index&amp;dataType=1&amp;keyword=" class="am-btn am-btn-white ">今天</a>
+                            <a href="http://192.168.4.109:8088/?m=Member&amp;a=index&amp;dataType=-1&amp;keyword=" class="am-btn am-btn-white ">昨天</a>
+                            <a href="http://192.168.4.109:8088/?m=Member&amp;a=index&amp;dataType=-7&amp;keyword=" class="am-btn am-btn-white ">本周</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="am-u-sm-12 am-u-md-4">
+                    <form>
+                        <div class="am-input-group am-input-group-sm">
+                            <input type="hidden" name="g" value="Form">
+                            <input type="hidden" name="m" value="Member">
+                            <input type="hidden" name="a" value="index">
+                            <input type="text" name="keyword" placeholder="请输入工单编号或者工单内容" value="" class="am-form-field">
+                            <span class="am-input-group-btn">
+                        <button class="am-btn am-btn-default" type="submit"><span class="am-icon-search"></span></button>
+                        </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!--<div class="layui-tab" lay-filter="keywords">-->
+                <!--<ul class="layui-tab-title">-->
+                    <!--<li class="layui-this" lay-id="0" >全部</li>-->
+                    <!--<li lay-id="1">昨天</li>-->
+                    <!--<li lay-id="2">今天</li>-->
+                    <!--<li lay-id="7">本周</li>-->
+                <!--</ul>-->
+                <!--<div class="layui-tab-content">-->
+                    <!--<table class="am-table">-->
+                        <!--<tbody>-->
+                        <!--<tr>-->
+                            <!--<th class="am-show-lg-only">工单编号</th>-->
+                            <!--<th class="am-show-lg-only">相关产品</th>-->
+                            <!--<th>问题内容</th>-->
+                            <!--<th class="am-show-lg-only">状态</th>-->
+                            <!--<th class="am-show-lg-only">提交时间</th>-->
+                            <!--<th class="am-show-lg-only">操作</th>-->
+                        <!--</tr>-->
+                        <!--<tbody id="infolist"></tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <ul class="am-pagination am-pagination-right am-text-sm">
+                <li><a>总计<b>1</b>个记录</a></li><li class="am-active"><a href="javascript:;">1</a></li>        </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    // layui.use('element', function(){
+    //     var element = layui.element;
+    //
+    //     //获取hash来切换选项卡，假设当前地址的hash为lay-id对应的值
+    //     var layid = location.hash.replace(/^#keywords=/, '');
+    //     element.tabChange('keywords', layid); //假设当前地址为：http://a.com#test1=222，那么选项卡会自动切换到“发送消息”这一项
+    //     //监听Tab切换，以改变地址hash值
+    //     element.on('tab(keywords)', function(){
+    //         var id = this.getAttribute('lay-id');
+    //         // location.hash = 'keywords='+ this.getAttribute('lay-id');
+    //         $.get('{:url("getDataT")}',{id:id},function (res) {
+    //             console.log(res);
+    //             $('#infolist').html('');
+    //             $str = '';
+    //             $.each(res,function(i,val){
+    //                 $str = $str + '<tr>';
+    //                 $str = $str + '<td> '+val.number+'  </td>';
+    //                 $str = $str + '<td> '+val.model_id+'  </td>';
+    //                 $str = $str + '<td> '+val.title+'  </td>';
+    //                 $str = $str + '<td> '+val.status+'  </td>';
+    //                 $str = $str + '<td> '+val.submit_time+'  </td>';
+    //                 $str = $str + '<td><a href="/home/ticket/index?id='+val.number+'">查看详情</a></td>';
+    //                 $str = $str + '</tr>';
+    //             });
+    //             $('#infolist').append($str);
+    //             if(res == "" ||  res.length < 0 || res == "undefined"){
+    //                 $('#infolist').html('<td colspan="10"  style="height:200px;text-align:center;color: #23527c">暂无相关数据...</td>');
+    //             }
+    //         })
+    //     });
+    //
+    // });
+</script>
+</body></html>

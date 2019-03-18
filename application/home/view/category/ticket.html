@@ -1,0 +1,232 @@
+{include file="common/meta"}
+<style type="text/css">
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    /*#upBox{*/
+    /*text-align: center;*/
+    /*width:500px;*/
+    /*padding: 20px;*/
+    /*border: 1px solid #666;*/
+    /*margin: auto;*/
+    /*margin-top: 150px;*/
+    /*margin-bottom: 200px;*/
+    /*position: relative;*/
+    /*border-radius: 10px;*/
+    /*}*/
+    #inputBox{
+        width: 100%;
+        height: 40px;
+        border: 1px solid cornflowerblue;
+        color: cornflowerblue;
+        border-radius: 20px;
+        position: relative;
+        text-align: center;
+        line-height: 40px;
+        overflow: hidden;
+        font-size: 16px;
+    }
+    #inputBox input{
+        width: 114%;
+        height: 40px;
+        opacity: 0;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: -14%;
+
+    }
+    #imgBox{
+        text-align: left;
+    }
+    .imgContainer{
+        display: inline-block;
+        width: 120px;
+        height: 120px;
+        margin-left: 1%;
+        border: 1px solid #666666;
+        position: relative;
+        margin-top: 30px;
+        box-sizing: border-box;
+    }
+    .imgContainer img{
+        width: 120px;
+        height: 120px;
+        cursor: pointer;
+    }
+    .imgContainer p{
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 30px;
+        background: black;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        display: none;
+    }
+    .imgContainer:hover p{
+        display: block;
+    }
+    #btn-submit{
+        display: inline-block;
+        text-align: center;
+        line-height: 30px;
+        outline: none;
+        width: 100px;
+        height: 30px;
+        background: cornflowerblue;
+        border: 1px solid cornflowerblue;
+        color: white;
+        cursor: pointer;
+        margin-top: 30px;
+        border-radius: 5px;
+    }
+</style>
+<div id="wrapper" class="am-text-sm">
+    <div class="am-g">
+        <div class="am-u-sm-12 am-u-sm-centered">
+            <div class="am-panel am-panel-default">
+                <div class="am-panel-bd">
+                    <ol class="am-breadcrumb am-text-default am-margin-bottom-0 categort-breadcrumb">
+                        <li class="am-active">
+                            <a href="http://192.168.4.109:8088/?m=Category&amp;a=index"><span class="am-badge am-badge-primary am-round am-text-default">1</span> 选择问题类型</a>
+                        </li>
+                        <!--<li class="am-active">-->
+                            <!--<a href="http://192.168.4.109:8088/?m=Category&amp;a=index&amp;id=1&amp;back_url=Lz9tPUNhdGVnb3J5JmE9aW5kZXg="><span class="am-badge am-badge-primary am-round am-text-default">2</span> 选择对应工单</a>-->
+                        <!--</li>-->
+                        <li class="am-active">
+                            <a href="javascript:;"><span class="am-badge am-badge-primary am-round am-text-default">2</span> 创建工单</a>
+                        </li>
+                    </ol>
+                    <hr class="am-margin-top-0">
+                    <h3>新工单 &gt; {$data.model_name}</h3>
+                    <form method="POST" id="upBox" class="am-form ajax-submit am-form-horizontal" data-am-validator="" novalidate="novalidate">
+                        <input type="hidden" name="number" value="{$data.model_number}">
+                        <input type="hidden" name="model_id" value="{$model_id}">
+                        <div class="am-g am-g-collapse">
+                            <div class="am-u-sm-12 am-u-sm-centered">
+                                <div class="am-form-group">
+                                    <label class="am-block">联系方式<i class="am-text-danger">*</i></label>
+                                    <label class="form-radio-label am-radio-inline">
+                                        <input class="form-radio" type="radio" name="contact" value=1 required="required" checked="checked">
+                                        <span>邮件</span>
+                                    </label>
+                                    <label class="form-radio-label am-radio-inline">
+                                        <input class="form-radio" type="radio" name="contact" value=3 required="required">
+                                        <span>手机号</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="am-g am-g-collapse">
+                            <div class="am-u-sm-12 am-u-sm-centered">
+                                <div class="am-form-group">
+                                    <label class="am-block">联系账号<i class="am-text-danger">*</i></label>
+                                    <input id="contact_account" class="form-text-input input-leng3 am-field-valid" name="contact_account" placeholder="请填写您的联系信息,方便我们与您联系" type="text" value="792532971@qq.com" required="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="am-g am-g-collapse">
+                            <div class="am-u-sm-12 am-u-sm-centered">
+                                <div class="am-form-group">
+                                    <label class="am-block">工单标题<i class="am-text-danger">*</i></label>
+                                    <input id="title" class="form-text-input input-leng3 am-field-valid" name="title" placeholder="简单扼要描述本次工单遇到的问题" type="text" value="" required="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="am-g am-g-collapse">
+                            <div class="am-u-sm-12 am-u-sm-centered">
+                                <div id="inputBox" class="am-form-group am-form-file">
+                                    <i class="am-icon-cloud-upload"></i> 选择要上传的文件
+                                    <input type="file" id="file" multiple accept="image/png,image/jpg,image/gif,image/JPEG">
+                                </div>
+                                <div id="imgBox"></div>
+                            </div>
+                        </div>
+
+
+                        <div id="gd_band" class="am-g am-g-collapse ">
+                            <div class="am-u-sm-12 am-u-sm-centered">
+                                <div class="am-form-group">
+                                    <label class="am-block">内容描述</label>
+                                    <!--<input class="form-text-input input-leng3" name="ticket_form_content" placeholder="请输入要提交的内容" type="text" value="">                                    </div>-->
+                                <textarea name="ticket_form_content"></textarea>
+                            </div>
+                        </div>
+                        <div class="am-g am-g-collapse am-margin-bottom">
+                            <div class="am-u-sm-6">
+                                <button type="button" id="button_gongdan" class="am-btn am-btn-primary am-btn-xs">提交</button>
+                            </div>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common/footer"}
+<script src="__STATIC__/home/txzh/uploadImg.js" type="text/javascript" charset="utf-8"></script>
+<script>
+        $('#title').click(function () {
+            var radio = $('input:radio:checked').val();
+            if(radio == 1){   //邮件
+                var email = $('#contact_account').val();
+                if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/))
+                {
+                    alert('联系账号格式不正确,请重新输入');
+                    $("#contact_account").focus();
+                }
+            }
+            if(radio ==3){   //手机
+                var mobile = $('#contact_account').val();
+                var re = isPhoneNo(mobile);
+                if(re === false){
+                    alert('手机格式不正确,请重新输入');
+                }
+            }
+        });
+
+        function isPhoneNo(phone) {
+            var pattern = /^1[3456789]\d{9}$/;
+            return pattern.test(phone);
+        }
+
+        // $('#button_gongdan').click(function () {
+        //     var data = $('#gongdan_data').serializeArray();
+        //     $.post('{:url("gongdanTijiao")}',data,function (result) {
+        //         if(result.code === 1){
+        //             alert('提交成功');
+        //             window.location.href = '{:url("ticket/index")}?id='+result.data;
+        //         }
+        //     })
+        // });
+
+        imgUpload({
+            inputId:'file', //input框id
+            imgBox:'imgBox', //图片容器id
+            buttonId:'button_gongdan', //提交按钮id
+            upUrl:'/home/category/gongdanTijiao',  //提交地址
+            data:'file1', //参数名
+            num:"5"//上传个数
+        });
+
+
+        $(":radio").click(function(){
+            var v = $(this).val();
+            $.get('{:url("radioValue")}',{v:v},function (res) {
+                $('#contact_account').val(res.value);
+            })
+        });
+
+</script>
+</body></html>

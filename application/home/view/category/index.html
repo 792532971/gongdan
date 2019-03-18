@@ -1,0 +1,41 @@
+{include file="common/meta"}
+
+<div id="wrapper" class="am-text-sm">
+    <div class="am-g">
+        <div class="am-u-sm-12 am-u-sm-centered">
+            <div class="am-panel am-panel-default">
+                <div class="am-panel-bd">
+                    <ol class="am-breadcrumb am-text-default am-margin-bottom-0 categort-breadcrumb">
+                        <li class="am-active">
+                            <a href="http://192.168.4.109:8088/?m=Category&amp;a=index"><span class="am-badge am-badge-primary am-round am-text-default">1</span> 选择问题类型</a>
+                        </li>
+                        <!--<li class="">-->
+                            <!--<a href="javascript:;"><span class="am-badge am-badge-primary am-round am-text-default">2</span> 选择对应工单</a>-->
+                        <!--</li>-->
+                        <li class="">
+                            <a href="javascript:;"><span class="am-badge am-badge-primary am-round am-text-default">2</span> 创建工单</a>
+                        </li>
+                    </ol>
+                    <hr class="am-margin-top-0">
+                    <ul class="am-avg-sm-1 am-avg-lg-4 am-thumbnails">
+                        {volist name="data" id="vo"}
+                        <li>
+                            <a onclick="ticket({$vo.model_id});" class="ticket-category">
+                                <h4 class="am-margin-bottom-xs">{$vo.model_name}</h4>
+                                <p class="am-margin-top-0">{$vo.model_des}</p>
+                            </a>
+                        </li>
+                        {/volist}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common/footer"}
+<script>
+    function ticket(id) {
+        window.location.href = '{:url("ticket")}?id='+id;
+    }
+</script>
+</body></html>

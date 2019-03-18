@@ -1,0 +1,282 @@
+{include file="common/meta"}
+<style>
+    /** 箭头未展开 */
+    /*#table1 + .treeTable .treeTable-icon .layui-icon-triangle-d:before {*/
+    /*content: "\e602";*/
+    /*}*/
+
+    /** 箭头展开 */
+    #table1 + .treeTable .treeTable-icon.open .layui-icon-triangle-d:before {
+        content: "\e61a";
+    }
+
+    /** 文件图标 */
+    #table1 + .treeTable .treeTable-icon .layui-icon-file:before {
+        content: "\e655";
+    }
+
+    /** 文件夹未展开 */
+    /*#table1 + .treeTable .treeTable-icon .layui-icon-layer:before {*/
+    /*content: "\e637";*/
+    /*}*/
+
+    /** 文件夹展开 */
+    #table1 + .treeTable .treeTable-icon.open .layui-icon-layer:before {
+        content: "\e634";
+    }
+</style>
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a>首页</a>
+        <a>
+          <cite>部门列表</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <!--<div class="layui-row">-->
+    <!--<form class="layui-form layui-col-md12 x-so">-->
+    <!--<input class="layui-input" placeholder="开始日" name="start" id="start">-->
+    <!--<input class="layui-input" placeholder="截止日" name="end" id="end">-->
+    <!--<input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">-->
+    <!--<button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>-->
+    <!--</form>-->
+    <!--</div>-->
+    <!--<xblock>-->
+    <!--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>-->
+    <!--<button class="layui-btn" onclick="x_admin_show('添加角色','roleAdd',600,400)"><i class="layui-icon"></i>添加角色</button>-->
+    <!--<span class="x-right" style="line-height:40px">共有数据：88 条</span>-->
+    <!--</xblock>-->
+
+    <section class="Hui-article-box">
+
+
+        <div class="Hui-article">
+            <article class="cl pd-20">
+                <div class="mt-10">
+                    <div class="btn-group">
+                        <button class="layui-btn" id="btn-expand"><i class="layui-icon layui-icon-down"></i>全部展开</button>
+                        <button class="layui-btn" id="btn-fold"><i class="layui-icon layui-icon-up"></i>全部折叠</button>
+                        <button class="layui-btn" id="btn-refresh"><i class="layui-icon layui-icon-refresh"></i>刷新表格</button>
+
+                        <button class="layui-btn" onclick="add_show('添加部门','depAdd')"><i class="layui-icon"></i>添加部门
+                        </button>
+                    </div>
+
+                    <table id="table1" class="layui-table" lay-filter="table1"></table>
+
+                    <script type="text/html" id="oper-col">
+                        <a class="layui-btn" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>修改</a>
+                        <a class="layui-btn" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+                    </script>
+                </div>
+            </article>
+        </div>
+    </section>
+
+
+</div>
+
+<script type="text/javascript">
+    layui.config({
+        base: '__STATIC__/treetable-lay/module/'
+    }).extend({
+        treetable: 'treetable-lay/treetable'
+    }).use(['layer', 'table', 'treetable'], function () {
+        var $ = layui.jquery;
+        var table = layui.table;
+        var layer = layui.layer;
+        var treetable = layui.treetable;
+
+        // 渲染表格
+        var renderTable = function () {
+            layer.load(2);
+            treetable.render({
+                treeColIndex: 1,
+                treeSpid: 0,
+                treeIdName: 'dep_id',
+                treePidName: 'dep_pid',
+                treeDefaultClose: true,
+                treeLinkage: false,
+                elem: '#table1',
+                url: "{:url('dep/depData')}",
+                page: false,
+                cols: [[
+                    {type: 'numbers'},
+                    {field: 'dep_name', title: '部门名称'},
+                    {field: 'dep_pinyin', title: '部门拼音'},
+                    {field: 'dep_pid', title: '上级部门id'},
+                    {field: 'dep_pidname', title: '上级名称'},
+                    {templet: '#oper-col', title: '操作'}
+                ]],
+                done: function () {
+                    layer.closeAll('loading');
+                }
+            });
+        };
+
+        renderTable();
+
+        $('#btn-expand').click(function () {
+            treetable.expandAll('#table1');
+        });
+
+        $('#btn-fold').click(function () {
+            treetable.foldAll('#table1');
+        });
+
+        $('#btn-refresh').click(function () {
+            renderTable();
+        });
+
+        /**监听工具条**/
+        table.on('tool(table1)', function (obj) {
+            var data = obj.data;
+            var layer = layui.layer;
+            var layEvent = obj.event;
+            if (layEvent === 'del') {
+                $.get("{:url('findChild')}", {'id': data.id}, function (result) {
+                    //存在下级部门 提醒全部删除
+                    if (result.code === 1) {
+                        layer.confirm(result.msg, {
+                            btn: ['确定删除', '我再想想'] //按钮
+                        }, function () {
+                            result.data.push(data.id);
+                            $.post('{:url("allDelete")}', {data: result.data}, function (res) {
+                                if (res.code === 1) {
+                                    layer.msg(res.msg, function () {
+                                        location.reload();
+                                    }, 1000)
+                                } else {
+                                    layer.msg(res.msg, {
+                                        time: 1000, //20s后自动关闭
+                                    });
+                                }
+                            })
+                        })
+                    } else {
+                        $.get("{:url('depDel')}", {'id': data.id}, function (resu) {
+                            if (resu.code === 0) {
+                                layer.msg(resu.msg);
+                            } else {
+                                layer.msg(resu.msg);
+                                setTimeout(function () {
+                                    window.location.reload();
+                                },1000)
+                            }
+
+                        })
+                    }
+
+                });
+
+            } else if (layEvent === 'edit') {
+                if(isPC()===false){
+                    var area = [500+'px', 750 +'px']
+                }else{
+                    var area = ['600px', '400px']
+                }
+                layer.open({
+                    type: 2,
+                    area: area,
+                    shadeClose: true,
+                    content: '{:url("depEdit")}?id='+data.id //这里content是一个普通的String
+                });
+            }
+        });
+    });
+
+    /*管理员-角色-添加*/
+    function admin_role_add(title, url, w, h) {
+        layer_show(title, url, w, '500');
+    }
+
+    function add_show(title, url, id, w, h) {
+        if (title == null || title == '') {
+            title = false;
+        }
+        ;
+        if (url == null || url == '') {
+            url = "404.html";
+        }
+        ;
+        if (w == null || w == '') {
+            w = ($(window).width() * 0.9);
+        }
+        ;
+        if (h == null || h == '') {
+            h = ($(window).height() - 50);
+        }
+        ;
+
+        if (isPC() === false) {
+            layer.open({
+                type: 2,
+                area: [640 + 'px', 960 + 'px'],
+                fix: false, //不固定
+                maxmin: true,
+                shadeClose: true,
+                shade: 0.4,
+                title: title,
+                content: url,
+                success: function () {
+                    //窗口加载成功刷新frame
+                    // location.replace(location.href);
+                },
+                cancel: function () {
+                    //关闭窗口之后刷新frame
+                    // location.replace(location.href);
+                },
+                end: function () {
+                    //窗口销毁之后刷新frame
+                    // location.replace(location.href);
+                }
+            });
+        } else {
+            layer.open({
+                type: 2,
+                area: [500 + 'px', 500 + 'px'],
+                fix: false, //不固定
+                maxmin: true,
+                shadeClose: true,
+                shade: 0.4,
+                title: title,
+                content: url,
+                success: function () {
+                    //窗口加载成功刷新frame
+                    // location.replace(location.href);
+                },
+                cancel: function () {
+                    //关闭窗口之后刷新frame
+                    // location.replace(location.href);
+                },
+                end: function () {
+                    //窗口销毁之后刷新frame
+                    // location.replace(location.href);
+                }
+            });
+        }
+
+    }
+
+    function isPC() {
+        var userAgentInfo = navigator.userAgent;
+        var Agents = ["Android", "iPhone",
+            "SymbianOS", "Windows Phone",
+            "iPad", "iPod"];
+        var flag = true;
+        for (var v = 0; v < Agents.length; v++) {
+            if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+</script>
+</body>
+
+</html>

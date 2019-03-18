@@ -1,0 +1,78 @@
+{include file="common/meta"}
+
+<body>
+<div class="x-body">
+    <form class="layui-form">
+        <input type="hidden" value="{$data.dep_id}" id="idid" name="id">
+        <div class="layui-form-item">
+            <label for="L_dep_pid" class="layui-form-label">上级部门</label>
+            <div class="layui-input-inline">
+                <select id="L_dep_pid" name="dep_pid" lay-verify="required">
+                    <option value=0>顶级部门</option>
+                    {volist id="vo" name="pidinfo"}
+                    <option  value="{$vo.dep_id}" {if condition="$data.dep_pid==$vo.dep_id"}selected="selected"{/if}>{php}echo str_repeat('--',$vo['level']*2);{/php}{$vo.dep_name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_dep_name" class="layui-form-label">
+                <span class="x-red">*</span>部门名称
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_dep_name" name="L_dep_name" value="{$data.dep_name}" required="" lay-verify="dep_name"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <!--<div class="layui-form-mid layui-word-aux">-->
+            <!--<span class="x-red">*</span>将会成为您唯一的登入名-->
+            <!--</div>-->
+        </div>
+
+        <div class="layui-form-item">
+            <label for="L_dep_pinyin" class="layui-form-label">
+                部门拼音
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_dep_pinyin" value="{$data.dep_pinyin}" name="dep_pinyin" required="" lay-verify="dep_pinyin"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+            </label>
+            <button  class="layui-btn" lay-filter="add" id="button" lay-submit="">
+                增加
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+
+        $('#button').on('click',function () {
+            var dep_pid = $('#L_dep_pid').val();
+            var dep_name = $('#L_dep_name').val();
+            var dep_pinyin = $('#L_dep_pinyin').val();
+            var id = $('#idid').val();
+
+            $.post('{:url("depEditSave")}',{id:id,dep_pid:dep_pid,dep_name:dep_name,dep_pinyin:dep_pinyin},function (res) {
+                layer.alert(res.msg, {icon: 6},function () {
+                    //关闭当前frame
+                    x_admin_close();
+                    // 可以对父窗口进行刷新
+                    x_admin_father_reload();
+                });
+            })
+
+        })
+
+    });
+</script>
+</body>
+
+</html>

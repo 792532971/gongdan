@@ -1,0 +1,61 @@
+{include file="common/meta"}
+
+<body>
+<div class="x-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label for="title" class="layui-form-label">
+                <span class="x-red">*</span>角色名称
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="title" name="title" required="" lay-verify="title"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">单选框</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="0" title="男" checked>
+                <input type="radio" name="status" value="1" title="女">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button  class="layui-btn" id="L_repass" lay-filter="add" lay-submit="">
+                增加
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer;
+
+
+        //监听提交
+        form.on('submit(add)', function(data){
+            console.log(data.field);
+            //发异步，把数据提交给php
+            $.post('{:url("addSave")}',{title:data.field.title,status:data.field.status},function (res) {
+                layer.msg(res.msg, {icon: 6},function () {
+                    //关闭当前frame
+                    x_admin_close();
+                    // 可以对父窗口进行刷新
+                    x_admin_father_reload();
+                },1000);
+
+            });
+            return false;
+        });
+
+
+    });
+</script>
+
+</body>
+
+</html>
